@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Remote Print</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+    background: #f0f0f0;
+    padding: 20px;
+  }
+
+  h2 {
+    margin-bottom: 20px;
+    text-align: center;
+    color: #333;
+  }
+
+  textarea {
+    width: 90%;
+    max-width: 400px;
+    height: 150px;
+    padding: 15px;
+    font-size: 1.2em;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    resize: none;
+    margin-bottom: 20px;
+  }
+
+  button {
+    width: 90%;
+    max-width: 400px;
+    padding: 20px;
+    font-size: 1.5em;
+    border: none;
+    border-radius: 10px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  button:hover {
+    background-color: #0056b3;
+  }
+</style>
+</head>
+<body>
+
+<h2>Remote Print</h2>
+<textarea id="printMessage" placeholder="Type your message here..."></textarea>
+<button onclick="sendPrint()">Print</button>
+
+<script>
+function sendPrint() {
+  const message = document.getElementById('printMessage').value || 'Empty message';
+
+  fetch('http://192.168.100.149:3000/print', { // Replace with your server IP
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ message: message })
+  })
+  .then(res => res.text())
+  .then(data => alert(data))
+  .catch(err => alert('Error: ' + err));
+}
+</script>
+
+</body>
+</html>
