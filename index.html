@@ -59,7 +59,7 @@
 <textarea id="printMessage" placeholder="Type your message here..."></textarea>
 <button onclick="sendPrint()">Print</button>
 
-<script>
+<!-- <script>
 function sendPrint() {
   const message = document.getElementById('printMessage').value || 'Empty message';
 
@@ -72,7 +72,39 @@ function sendPrint() {
   .then(data => alert(data))
   .catch(err => alert('Error: ' + err));
 }
+</script> -->
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
+  import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-database.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCYfx6hM2rceaiWhC8minNepJubn0vop7Y",
+    authDomain: "print-cloud-relay.firebaseapp.com",
+    databaseURL: "https://print-cloud-relay-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "print-cloud-relay",
+    storageBucket: "print-cloud-relay.firebasestorage.app",
+    messagingSenderId: "591397409162",
+    appId: "1:591397409162:web:2d68c5150a9459eb4cf873"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+
+  window.sendPrint = function () {
+    const message = document.getElementById('printMessage').value || 'Empty message';
+
+    push(ref(db, 'printQueue'), {
+      message: message,
+      status: "pending",
+      timestamp: Date.now()
+    });
+
+    alert("Print request sent!");
+  };
 </script>
+
+
 
 </body>
 </html>
